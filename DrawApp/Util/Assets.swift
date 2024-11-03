@@ -10,6 +10,7 @@ import SwiftUI
 enum AppImage {
     public static var arrowLeft: UIImage { getImage(named: "Arrow-left") }
     public static var arrowRight: UIImage { getImage(named: "Arrow-right") }
+    public static var arrowUp: UIImage { getImage(named: "Arrow-Up") }
     public static var bin: UIImage { getImage(named: "Bin") }
     public static var backgroundTexture: UIImage { getImage(named: "BackgroundTexture") }
     public static var brush: UIImage { getImage(named: "Brush") }
