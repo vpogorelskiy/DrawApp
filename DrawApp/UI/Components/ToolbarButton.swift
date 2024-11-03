@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import Combine
 
 protocol ActionSendable {
+    func getPublisher(for action: ControlsContentViewModel.Action) -> CurrentValueSubject<Bool, Never>
+    func isSelected(forAction: ControlsContentViewModel.Action) -> Bool
     func sendAction(_ action: ControlsContentViewModel.Action)
 }
 
@@ -16,23 +19,28 @@ struct ToolbarButton: View {
     @Environment(\.defaultColor) private var defaultColor: UIColor
     @Environment(\.selectedColor) private var selectedColor: UIColor
     
-    let isSelected: Bool
-    let action: ControlsContentViewModel.Action
-    let image: UIImage
+    @State var isHighlighted: Bool = false
+    
+    private let action: ControlsContentViewModel.Action
+    private let image: UIImage
+    private var imageColor: UIColor {
+        (actionReceiver?.isSelected(forAction: action) ?? false) ? selectedColor : defaultColor
+    }
+    private var cancellables: [AnyCancellable] = []
     
     var body: some View {
         Button(action: {
             actionReceiver?.sendAction(action)
         }, label: {
             Image(uiImage: image.withRenderingMode(.alwaysTemplate))
-                .tint(.init(uiColor: isSelected ? selectedColor : defaultColor))
+                .tint(.init(uiColor: imageColor))
         })
     }
     
-    init(image: UIImage, action: ControlsContentViewModel.Action, isSelected: Bool) {
+    init(image: UIImage, action: ControlsContentViewModel.Action) {
         self.action = action
         self.image = image
-        self.isSelected = isSelected
+//        self.isSelected = isSelected
     }
 }
 

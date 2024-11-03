@@ -15,9 +15,48 @@ final class ControlsContentViewModel: ObservableObject, ActionSendable {
     @Published var isStopAvailable: Bool = false
     @Published var isPlayAvailable: Bool = false
     
+    private let undoAvailableSubject = CurrentValueSubject<Bool, Never>(false)
+    private let redoAvailableSubject = CurrentValueSubject<Bool, Never>(false)
+    
+    private let stopAvailableSubject = CurrentValueSubject<Bool, Never>(false)
+    private let playAvailableSubject = CurrentValueSubject<Bool, Never>(false)
+    
+    
     enum Action {
         case undo, redo, delete, newFile, layers, play, stop
         case pencil, brush, erase, shapes, colors
+    }
+    
+    func isSelected(forAction action: ControlsContentViewModel.Action) -> Bool {
+        return switch action {
+        case .undo:
+            isUndoAvailable
+        case .redo:
+            isRedoAvailable
+        case .stop:
+            isStopAvailable
+        case .play:
+            isPlayAvailable
+        default:
+            false
+        }
+    }
+    
+    func getPublisher(for action: ControlsContentViewModel.Action) -> CurrentValueSubject<Bool, Never> {
+        let subject: CurrentValueSubject<Bool, Never> = switch action {
+        case .undo:
+            undoAvailableSubject
+        case .redo:
+            redoAvailableSubject
+        case .stop:
+            stopAvailableSubject
+        case .play:
+            playAvailableSubject
+        default:
+            CurrentValueSubject<Bool, Never>(false)
+        }
+
+        return subject//.eraseToAnyPublisher()
     }
     
     func sendAction(_ action: Action) {
@@ -33,7 +72,6 @@ final class ControlsContentViewModel: ObservableObject, ActionSendable {
         default:
             break
         }
-        
     }
 }
 
@@ -62,19 +100,19 @@ struct ControlsContentView: View {
     
     var topButtonsBar: some View {
         HStack {
-            ToolbarButton(image: AppImage.arrowLeft, action: .undo, isSelected: viewModel.isUndoAvailable)
-            ToolbarButton(image: AppImage.arrowRight, action: .redo, isSelected: viewModel.isRedoAvailable)
+            ToolbarButton(image: AppImage.arrowLeft, action: .undo)
+            ToolbarButton(image: AppImage.arrowRight, action: .redo)
             
             Spacer()
             
-            ToolbarButton(image: AppImage.bin, action: .delete, isSelected: true)
-            ToolbarButton(image: AppImage.filePlus, action: .newFile, isSelected: true)
-            ToolbarButton(image: AppImage.Layers, action: .layers, isSelected: true)
+            ToolbarButton(image: AppImage.bin, action: .delete)
+            ToolbarButton(image: AppImage.filePlus, action: .newFile)
+            ToolbarButton(image: AppImage.Layers, action: .layers)
             
             Spacer()
             
-            ToolbarButton(image: AppImage.stop, action: .stop, isSelected: viewModel.isStopAvailable)
-            ToolbarButton(image: AppImage.play, action: .play, isSelected: viewModel.isPlayAvailable)
+            ToolbarButton(image: AppImage.stop, action: .stop)
+            ToolbarButton(image: AppImage.play, action: .play)
         }
         .environment(\.defaultColor, AppColor.grey)
         .environment(\.selectedColor, AppColor.white)
@@ -84,12 +122,12 @@ struct ControlsContentView: View {
     
     var bottomButtonsBar: some View {
         HStack {
-            ToolbarButton(image: AppImage.pencil, action: .pencil, isSelected: false)
-            ToolbarButton(image: AppImage.brush, action: .brush, isSelected: false)
+            ToolbarButton(image: AppImage.pencil, action: .pencil)
+            ToolbarButton(image: AppImage.brush, action: .brush)
             
-            ToolbarButton(image: AppImage.erase, action: .erase, isSelected: false)
-            ToolbarButton(image: AppImage.shapes, action: .shapes, isSelected: false)
-            ToolbarButton(image: AppImage.circle, action: .colors, isSelected: false)
+            ToolbarButton(image: AppImage.erase, action: .erase)
+            ToolbarButton(image: AppImage.shapes, action: .shapes)
+            ToolbarButton(image: AppImage.circle, action: .colors)
         }
         .environment(\.defaultColor, AppColor.white)
         .environment(\.selectedColor, AppColor.green)
