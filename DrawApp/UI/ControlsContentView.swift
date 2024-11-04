@@ -8,49 +8,13 @@
 import SwiftUI
 import Combine
 
-final class ControlsContentViewModel: ObservableObject, ActionSendable {
+final class ControlsContentViewModel: ObservableObject {
     @Published var isShapesMenuShown = false
     @Published var isColorsMenuShown = false
     @Published var isPalleteMenuShown = false
     
-    private let undoAvailableSubject = CurrentValueSubject<Bool, Never>(false)
-    private let redoAvailableSubject = CurrentValueSubject<Bool, Never>(false)
-    private let stopAvailableSubject = CurrentValueSubject<Bool, Never>(false)
-    private let playAvailableSubject = CurrentValueSubject<Bool, Never>(false)
-    
-    enum Action {
-        case undo, redo, delete, newFile, layers, play, stop
-        case pencil, brush, erase, shapes, colors
-        case square, circle, triangle, arrow
-        case palette, color(UIColor)
-    }
-    
-    func getPublisher(for action: ControlsContentViewModel.Action) -> AnyPublisher<Bool, Never> {
-        getSubject(for: action).eraseToAnyPublisher()
-
-    }
-    
-    private func getSubject(for action: ControlsContentViewModel.Action) -> CurrentValueSubject<Bool, Never> {
-        let subject: CurrentValueSubject<Bool, Never> = switch action {
-        case .undo:
-            undoAvailableSubject
-        case .redo:
-            redoAvailableSubject
-        case .stop:
-            stopAvailableSubject
-        case .play:
-            playAvailableSubject
-        default:
-            CurrentValueSubject<Bool, Never>(false)
-        }
-
-        return subject
-    }
-    
-    func sendAction(_ action: Action) {
-        let subject = getSubject(for: action)
-        subject.send(!subject.value)
-    }
+    public let topToolbarViewModel = TopToolbarViewModel()
+    public let bottomToolbarViewModel = BottomToolbarViewModel()
 }
 
 struct ControlsContentView<Content: View>: View {
@@ -72,6 +36,8 @@ struct ControlsContentView<Content: View>: View {
                 bottomButtonsBar
             }
             .background(Color(uiColor: AppColor.black))
+            
+            toolbarsStack
         }
     }
     
@@ -79,23 +45,25 @@ struct ControlsContentView<Content: View>: View {
         VStack(spacing: 8) {
             Spacer()
             
-            if (viewModel.isPalleteMenuShown) {
-                HStack {
-                    ToolbarButton(image: AppImage.square, action: .square, actionReceiver: viewModel)
-                    ToolbarButton(image: AppImage.circle, action: .circle, actionReceiver: viewModel)
-                    ToolbarButton(image: AppImage.triangle, action: .triangle, actionReceiver: viewModel)
-                    ToolbarButton(image: AppImage.arrowUp, action: .arrow, actionReceiver: viewModel)
-                }
-            }
-            
-            if (viewModel.isColorsMenuShown) {
-                HStack {
-                    ToolbarButton(image: AppImage.palette, action: .palette, actionReceiver: viewModel)
-                    ToolbarButton(image: AppImage.circle, action: .circle, actionReceiver: viewModel)
-                    ToolbarButton(image: AppImage.circle, action: .triangle, actionReceiver: viewModel)
-                    ToolbarButton(image: AppImage.circle, action: .arrow, actionReceiver: viewModel)
-                }
-            }
+//            
+//            // TODO: Extract toolbar into a separate class
+//            if (viewModel.isPalleteMenuShown) {
+//                HStack {
+//                    ToolbarButton(image: AppImage.square, action: .square, actionReceiver: viewModel)
+//                    ToolbarButton(image: AppImage.circle, action: .circle, actionReceiver: viewModel)
+//                    ToolbarButton(image: AppImage.triangle, action: .triangle, actionReceiver: viewModel)
+//                    ToolbarButton(image: AppImage.arrowUp, action: .arrow, actionReceiver: viewModel)
+//                }
+//            }
+//            
+//            if (viewModel.isColorsMenuShown) {
+//                HStack {
+//                    ToolbarButton(image: AppImage.palette, action: .palette, actionReceiver: viewModel)
+//                    ToolbarButton(image: AppImage.circle, action: .circle, actionReceiver: viewModel)
+//                    ToolbarButton(image: AppImage.circle, action: .triangle, actionReceiver: viewModel)
+//                    ToolbarButton(image: AppImage.circle, action: .arrow, actionReceiver: viewModel)
+//                }
+//            }
         }
     }
     
@@ -110,19 +78,13 @@ struct ControlsContentView<Content: View>: View {
     
     var topButtonsBar: some View {
         HStack {
-            ToolbarButton(image: AppImage.arrowLeft, action: .undo, actionReceiver: viewModel)
-            ToolbarButton(image: AppImage.arrowRight, action: .redo, actionReceiver: viewModel)
-            
-            Spacer()
-            
-            ToolbarButton(image: AppImage.bin, action: .delete, actionReceiver: viewModel)
-            ToolbarButton(image: AppImage.filePlus, action: .newFile, actionReceiver: viewModel)
-            ToolbarButton(image: AppImage.Layers, action: .layers, actionReceiver: viewModel)
-            
-            Spacer()
-            
-            ToolbarButton(image: AppImage.stop, action: .stop, actionReceiver: viewModel)
-            ToolbarButton(image: AppImage.play, action: .play, actionReceiver: viewModel)
+            ForEach(Array(viewModel.topToolbarViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+                NewToolbarButton(buttonItem: item)
+                
+                if viewModel.topToolbarViewModel.gapIndices.contains(index) {
+                    Spacer()
+                }
+            }
         }
         .environment(\.defaultColor, AppColor.grey)
         .environment(\.selectedColor, AppColor.white)
@@ -131,12 +93,9 @@ struct ControlsContentView<Content: View>: View {
     
     var bottomButtonsBar: some View {
         HStack {
-            ToolbarButton(image: AppImage.pencil, action: .pencil, actionReceiver: viewModel)
-            ToolbarButton(image: AppImage.brush, action: .brush, actionReceiver: viewModel)
-            
-            ToolbarButton(image: AppImage.erase, action: .erase, actionReceiver: viewModel)
-            ToolbarButton(image: AppImage.shapes, action: .shapes, actionReceiver: viewModel)
-            ToolbarButton(image: AppImage.circle, action: .colors, actionReceiver: viewModel)
+            ForEach(Array(viewModel.bottomToolbarViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+                NewToolbarButton(buttonItem: item)
+            }
         }
         .environment(\.defaultColor, AppColor.white)
         .environment(\.selectedColor, AppColor.green)

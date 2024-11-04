@@ -9,20 +9,20 @@ import SwiftUI
 import Combine
 
 protocol ActionSendable {
-    func getPublisher(for action: ControlsContentViewModel.Action) -> AnyPublisher<Bool, Never>
-//    func isSelected(forAction: ControlsContentViewModel.Action) -> Bool
-    func sendAction(_ action: ControlsContentViewModel.Action)
+    associatedtype Action
+    func getPublisher(for action: Action) -> AnyPublisher<Bool, Never>
+    func sendAction(_ action: Action)
 }
 
-struct ToolbarButton: View {
-    private var actionReceiver: ActionSendable
+struct ToolbarButton<ActionReceiver: ActionSendable>: View {
+    private var actionReceiver: ActionReceiver
     @Environment(\.defaultColor) private var defaultColor: UIColor
     @Environment(\.selectedColor) private var selectedColor: UIColor
     
-    @State var isHighlighted: Bool = false
+    @State private var isHighlighted: Bool = false
     
     private let selectedPublisher: AnyPublisher<Bool, Never>
-    private let action: ControlsContentViewModel.Action
+    private let action: ActionReceiver.Action
     private let image: UIImage
     private var imageColor: UIColor {
         isHighlighted ? selectedColor : defaultColor
@@ -40,18 +40,13 @@ struct ToolbarButton: View {
         
     }
     
-    init(image: UIImage, action: ControlsContentViewModel.Action, actionReceiver: ActionSendable) {
+    init(image: UIImage, action: ActionReceiver.Action, actionReceiver: ActionReceiver) {
         self.action = action
         self.image = image
         self.actionReceiver = actionReceiver
         self.selectedPublisher = actionReceiver.getPublisher(for: action)
-//        self.isSelected = isSelected
     }
 }
-
-//#Preview {
-//    ToolbarButton()
-//}
 
 // MARK: - selectedColor
 
@@ -80,16 +75,3 @@ extension EnvironmentValues {
         set { self[ToolbarButtonDefaultColorEnvironmentKey.self] = newValue }
     }
 }
-
-// MARK: - actionReceiver
-
-//struct ToolbarButtonActionReceiverEnvironmentKey: EnvironmentKey {
-//    static let defaultValue: ActionSendable = 
-//}
-//
-//extension EnvironmentValues {
-//    var actionReceiver: ActionSendable? {
-//        get { self[ToolbarButtonActionReceiverEnvironmentKey.self] }
-//        set { self[ToolbarButtonActionReceiverEnvironmentKey.self] = newValue }
-//    }
-//}
