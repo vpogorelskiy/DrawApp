@@ -1,5 +1,5 @@
 //
-//  PlaybackManager.swift
+//  LayerManager.swift
 //  DrawApp
 //
 //  Created by Vyacheslav Pogorelskiy on 04.11.2024.

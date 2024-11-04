@@ -24,7 +24,6 @@ final class ShapeInfo {
 final class DrawingViewModel: ObservableObject {
     
     @Injected private var layerManager: LayerManager!
-    @Injected private var playbackManager: PlaybackManager!
     
     @Published var currentImage: UIImage? = nil
     @Published var backgroundImage: UIImage? = nil

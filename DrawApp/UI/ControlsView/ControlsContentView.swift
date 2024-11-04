@@ -20,6 +20,7 @@ struct ControlsContentView<Content: View>: View {
     @ObservedObject private var simpleColorsViewModel = ColorsViewModel()
     @ObservedObject private var paletteViewModel = PaletteViewModel()
     @ObservedObject private var shapesViewModel = ShapesViewModel()
+    @ObservedObject private var playbackViewModel = PlaybackViewModel()
     
     @ViewBuilder var contentBuilder: () -> Content
     
@@ -44,7 +45,18 @@ struct ControlsContentView<Content: View>: View {
             .background(Color(uiColor: AppColor.black))
             
             toolbarsOverlay
+            
+            playbackOverlay
         }
+    }
+    
+    var playbackOverlay: some View {
+        ZStack {
+            if topToolbarViewModel.isShowingPlayback {
+                PlaybackView(viewModel: playbackViewModel)
+            }
+        }
+        .background(Color.white)
     }
     
     var toolbarsOverlay: some View {

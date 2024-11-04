@@ -13,6 +13,9 @@ class TopToolbarViewModel: ObservableObject {
         case undo, redo, delete, newLayer, layers, stop, play
     }
     
+    @Published var isShowingLayers: Bool = false
+    @Published var isShowingPlayback: Bool = false
+    
     @Injected var undoManager: UndoManager!
     @Injected var playbackManager: PlaybackManager!
     @Injected var layerManager: LayerManager!
@@ -41,14 +44,14 @@ class TopToolbarViewModel: ObservableObject {
                  isSelected: true,
                  value: .layers,
                  onTap: { [weak self] in self?.showAllLayers() }),
-           .init(image: AppImage.stop, 
-                 isSelected: playbackManager.canPause,
+           .init(image: AppImage.stop,
+                 isSelected: isShowingPlayback,
                  value: .stop,
-                 onTap: { [weak self] in self?.playbackManager.pause() }),
-           .init(image: AppImage.play, 
-                 isSelected: playbackManager.canPlay,
+                 onTap: { [weak self] in self?.isShowingPlayback = false }),
+           .init(image: AppImage.play,
+                 isSelected: true,
                  value: .play,
-                 onTap: { [weak self] in self?.playbackManager.play() })
+                 onTap: { [weak self] in self?.isShowingPlayback = true })
        ]
     }()
     
