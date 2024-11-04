@@ -18,9 +18,22 @@ enum DrawingMode {
 }
 
 protocol DrawingToolManager {
-    var drawingMode: DrawingMode { get }
+    var drawingMode: DrawingMode? { get }
     var selectedColor: UIColor { get }
     
     func selectColor(_: UIColor)
     func setDrawingMode(_: DrawingMode)
+}
+
+final class DrawingToolManagerImpl: DrawingToolManager {
+    var drawingMode: DrawingMode?
+    var selectedColor: UIColor = AppColor.blue
+    
+    func selectColor(_ color: UIColor) {
+        selectedColor = color
+    }
+    
+    func setDrawingMode(_ drawingMode: DrawingMode) {
+        self.drawingMode = drawingMode
+    }
 }

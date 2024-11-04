@@ -11,7 +11,8 @@ import SwiftUI
 struct DrawApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ControlsContentView(viewModel: .init(),
+                                contentView: { DrawingView() })
         }
     }
     
@@ -26,6 +27,10 @@ struct DrawApp: App {
         
         Resolver.sharedInstance.register(LayerManager.self) { r in
             LayerManagerImpl()
+        }
+        
+        Resolver.sharedInstance.register(DrawingToolManager.self) { r in
+            DrawingToolManagerImpl()
         }
     }
 }

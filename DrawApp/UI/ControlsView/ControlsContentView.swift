@@ -38,36 +38,47 @@ struct ControlsContentView<Content: View>: View {
     }
     
     var toolbarsOverlay: some View {
-        VStack(spacing: 8) {
-            Spacer()
-            
-            if (viewModel.bottomToolbarViewModel.isShapesMenuShown) {
-                HStack {
-                    ForEach(Array(viewModel.bottomToolbarViewModel.shapesViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
-                        ToolbarButton(buttonItem: item)
-                            .frame(width: 32, height: 32)
-                    }
+        ZStack {
+            VStack(spacing: 8) {
+                Spacer()
+                
+                // Palette grid
+                if (viewModel.bottomToolbarViewModel.simpleColorsViewModel.isPaletteMenuShown) {
+                    Grid(horizontalSpacing: 16,
+                         verticalSpacing: 16) {
+                        ForEach(Array(viewModel.bottomToolbarViewModel.paletteViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+                            ToolbarButton(buttonItem: item)
+                                .frame(width: 32, height: 32)
+                        }
+                    }.padding(16)
+                        .background(.thinMaterial)
+                }
+                
+                // Small colors toolbar
+                if (viewModel.bottomToolbarViewModel.isColorsMenuShown) {
+                    HStack {
+                        ForEach(Array(viewModel.bottomToolbarViewModel.simpleColorsViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+                            ToolbarButton(buttonItem: item)
+                                .frame(width: 32, height: 32)
+                        }
+                    }.padding(16)
+                        .background(.thinMaterial)
+                }
+                
+                // Shapes selection toolbar
+                if (viewModel.bottomToolbarViewModel.isShapesMenuShown) {
+                    HStack {
+                        ForEach(Array(viewModel.bottomToolbarViewModel.shapesViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+                            ToolbarButton(buttonItem: item)
+                                .frame(width: 32, height: 32)
+                        }
+                    }.padding(16)
+                        .background(.thinMaterial)
                 }
             }
-            
-            if (viewModel.bottomToolbarViewModel.isColorsMenuShown) {
-                HStack {
-                    ForEach(Array(viewModel.bottomToolbarViewModel.simpleColorsViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
-                        ToolbarButton(buttonItem: item)
-                            .frame(width: 32, height: 32)
-                    }
-                }
-            }
-            
-            if (viewModel.bottomToolbarViewModel.simpleColorsViewModel.isPaletteMenuShown) {
-                Grid(horizontalSpacing: 16,
-                     verticalSpacing: 16) {
-                    ForEach(Array(viewModel.bottomToolbarViewModel.paletteViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
-                        ToolbarButton(buttonItem: item)
-                            .frame(width: 32, height: 32)
-                    }
-                }
-            }
+            .padding(60)
+        }.onTapGesture {
+            viewModel.bottomToolbarViewModel.dismissOverlay()
         }
     }
     
