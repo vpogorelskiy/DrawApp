@@ -11,7 +11,8 @@ import SwiftUI
 struct DrawApp: App {
     var body: some Scene {
         WindowGroup {
-            ControlsContentView(viewModel: .init(),
+            ControlsContentView(topviewModel: .init(),
+                                bottomViewModel: .init(),
                                 contentView: { DrawingView() })
         }
     }

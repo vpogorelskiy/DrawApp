@@ -8,19 +8,23 @@
 import SwiftUI
 import Combine
 
-final class ControlsContentViewModel: ObservableObject {
-    @ObservedObject var topToolbarViewModel = TopToolbarViewModel()
-    @ObservedObject var bottomToolbarViewModel = BottomToolbarViewModel()
-}
+//final class ControlsContentViewModel: ObservableObject {
+//    @ObservedObject var topToolbarViewModel = TopToolbarViewModel()
+//    @Published var bottomToolbarViewModel = BottomToolbarViewModel()
+//}
 
 struct ControlsContentView<Content: View>: View {
     
-    @ObservedObject var viewModel: ControlsContentViewModel
+    @ObservedObject var topToolbarViewModel = TopToolbarViewModel()
+    @ObservedObject var bottomToolbarViewModel = BottomToolbarViewModel()
     
     @ViewBuilder var contentBuilder: () -> Content
     
-    init(viewModel: ControlsContentViewModel, contentView: @escaping () -> Content) {
-        self.viewModel = viewModel
+    init(topviewModel: TopToolbarViewModel,
+         bottomViewModel: BottomToolbarViewModel,
+         contentView: @escaping () -> Content) {
+        self.topToolbarViewModel = topviewModel
+        self.bottomToolbarViewModel = bottomViewModel
         self.contentBuilder = contentView
     }
     
@@ -43,10 +47,10 @@ struct ControlsContentView<Content: View>: View {
                 Spacer()
                 
                 // Palette grid
-                if (viewModel.bottomToolbarViewModel.simpleColorsViewModel.isPaletteMenuShown) {
+                if (bottomToolbarViewModel.simpleColorsViewModel.isPaletteMenuShown) {
                     Grid(horizontalSpacing: 16,
                          verticalSpacing: 16) {
-                        ForEach(Array(viewModel.bottomToolbarViewModel.paletteViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+                        ForEach(Array(bottomToolbarViewModel.paletteViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
                             ToolbarButton(buttonItem: item)
                                 .frame(width: 32, height: 32)
                         }
@@ -56,9 +60,9 @@ struct ControlsContentView<Content: View>: View {
                 }
                 
                 // Small colors toolbar
-                if (viewModel.bottomToolbarViewModel.isColorsMenuShown) {
+                if (bottomToolbarViewModel.isColorsMenuShown) {
                     HStack {
-                        ForEach(Array(viewModel.bottomToolbarViewModel.simpleColorsViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+                        ForEach(Array(bottomToolbarViewModel.simpleColorsViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
                             ToolbarButton(buttonItem: item)
                                 .frame(width: 32, height: 32)
                         }
@@ -68,9 +72,9 @@ struct ControlsContentView<Content: View>: View {
                 }
                 
                 // Shapes selection toolbar
-                if (viewModel.bottomToolbarViewModel.isShapesMenuShown) {
+                if (bottomToolbarViewModel.isShapesMenuShown) {
                     HStack {
-                        ForEach(Array(viewModel.bottomToolbarViewModel.shapesViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+                        ForEach(Array(bottomToolbarViewModel.shapesViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
                             ToolbarButton(buttonItem: item)
                                 .frame(width: 32, height: 32)
                         }
@@ -83,7 +87,7 @@ struct ControlsContentView<Content: View>: View {
             .environment(\.selectedColor, AppColor.green)
             .padding(60)
         }.onTapGesture {
-            viewModel.bottomToolbarViewModel.dismissOverlay()
+            bottomToolbarViewModel.dismissOverlay()
         }
     }
     
@@ -98,10 +102,10 @@ struct ControlsContentView<Content: View>: View {
     
     var topButtonsBar: some View {
         HStack {
-            ForEach(Array(viewModel.topToolbarViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+            ForEach(Array(topToolbarViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
                 ToolbarButton(buttonItem: item)
                 
-                if viewModel.topToolbarViewModel.gapIndices.contains(index) {
+                if topToolbarViewModel.gapIndices.contains(index) {
                     Spacer()
                 }
             }
@@ -113,7 +117,7 @@ struct ControlsContentView<Content: View>: View {
     
     var bottomButtonsBar: some View {
         HStack {
-            ForEach(Array(viewModel.bottomToolbarViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+            ForEach(Array(bottomToolbarViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
                 ToolbarButton(buttonItem: item)
             }
         }
@@ -124,5 +128,7 @@ struct ControlsContentView<Content: View>: View {
 }
 
 #Preview {
-    ControlsContentView(viewModel: .init(), contentView: { Text("Empty").background(Color.white) })
+    ControlsContentView(topviewModel: .init(),
+                        bottomViewModel: .init(),
+                        contentView: { Text("Empty").background(Color.white) })
 }

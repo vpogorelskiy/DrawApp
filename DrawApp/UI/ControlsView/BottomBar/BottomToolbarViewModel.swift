@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 class BottomToolbarViewModel: ObservableObject {
     
@@ -19,12 +20,15 @@ class BottomToolbarViewModel: ObservableObject {
     
     @Published var isShapesMenuShown = true
     @Published var isColorsMenuShown = true
+    @Published var isPaletteMenuShown = true
     
     @Published private var selectedTool: Tool? = nil
     
     public let simpleColorsViewModel = ColorsViewModel()
     public let paletteViewModel = PaletteViewModel()
     public let shapesViewModel = ShapesViewModel()
+    
+    private var cancellables: Set<AnyCancellable> = []
     
     lazy var buttonItems: [ToolbarButtonItem<Tool>] = {
         [
@@ -51,6 +55,12 @@ class BottomToolbarViewModel: ObservableObject {
                   onTap: { [weak self] in self?.selectTool(.color) })
         ]
     }()
+    
+    init() {
+        simpleColorsViewModel.$isPaletteMenuShown
+            .assign(to: \.isPaletteMenuShown, on: self)
+            .store(in: &cancellables)
+    }
     
     func dismissOverlay() {
         isShapesMenuShown = false
