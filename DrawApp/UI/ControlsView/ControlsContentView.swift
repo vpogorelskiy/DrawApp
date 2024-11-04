@@ -79,7 +79,7 @@ struct ControlsContentView<Content: View>: View {
     var topButtonsBar: some View {
         HStack {
             ForEach(Array(viewModel.topToolbarViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
-                NewToolbarButton(buttonItem: item)
+                ToolbarButton(buttonItem: item)
                 
                 if viewModel.topToolbarViewModel.gapIndices.contains(index) {
                     Spacer()
@@ -94,7 +94,7 @@ struct ControlsContentView<Content: View>: View {
     var bottomButtonsBar: some View {
         HStack {
             ForEach(Array(viewModel.bottomToolbarViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
-                NewToolbarButton(buttonItem: item)
+                ToolbarButton(buttonItem: item)
             }
         }
         .environment(\.defaultColor, AppColor.white)

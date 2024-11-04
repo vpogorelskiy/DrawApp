@@ -33,7 +33,7 @@ struct TopToolbarView: View {
     
     var body: some View {
         ForEach(Array(viewModel.buttonItems.enumerated()), id: \.offset) { index, item in
-            NewToolbarButton(buttonItem: item)
+            ToolbarButton(buttonItem: item)
             
             if viewModel.gapIndices.contains(index) {
                 Spacer()

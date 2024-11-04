@@ -1,50 +1,44 @@
 //
-//  ToolbarButton.swift
+//  ToolbarView.swift
 //  DrawApp
 //
-//  Created by Vyacheslav Pogorelskiy on 03.11.2024.
+//  Created by Vyacheslav Pogorelskiy on 04.11.2024.
 //
 
 import SwiftUI
 import Combine
 
-protocol ActionSendable {
-    associatedtype Action
-    func getPublisher(for action: Action) -> AnyPublisher<Bool, Never>
-    func sendAction(_ action: Action)
-}
-
-struct ToolbarButton<ActionReceiver: ActionSendable>: View {
-    private var actionReceiver: ActionReceiver
+struct ToolbarButton: View {
+    private let buttonItem: ToolbarButtonItem
     @Environment(\.defaultColor) private var defaultColor: UIColor
     @Environment(\.selectedColor) private var selectedColor: UIColor
     
-    @State private var isHighlighted: Bool = false
-    
-    private let selectedPublisher: AnyPublisher<Bool, Never>
-    private let action: ActionReceiver.Action
-    private let image: UIImage
     private var imageColor: UIColor {
-        isHighlighted ? selectedColor : defaultColor
+        buttonItem.isSelected ? selectedColor : defaultColor
     }
-    private var cancellables: [AnyCancellable] = []
     
     var body: some View {
-        Button(action: {
-            actionReceiver.sendAction(action)
-        }, label: {
-            Image(uiImage: image.withRenderingMode(.alwaysTemplate))
+        Button(action: { buttonItem.onTap() },
+               label: {
+            Image(uiImage: buttonItem.image.withRenderingMode(.alwaysTemplate))
                 .tint(.init(uiColor: imageColor))
         })
-        .onReceive(selectedPublisher, perform: { isHighlighted = $0 })
-        
     }
     
-    init(image: UIImage, action: ActionReceiver.Action, actionReceiver: ActionReceiver) {
-        self.action = action
+    init(buttonItem: ToolbarButtonItem) {
+        self.buttonItem = buttonItem
+    }
+}
+
+final class ToolbarButtonItem: ObservableObject {
+    let image: UIImage
+    @Published var isSelected: Bool
+    let onTap: () -> Void
+    
+    init(image: UIImage, isSelected: Bool, onTap: @escaping () -> Void) {
         self.image = image
-        self.actionReceiver = actionReceiver
-        self.selectedPublisher = actionReceiver.getPublisher(for: action)
+        self.isSelected = isSelected
+        self.onTap = onTap
     }
 }
 
