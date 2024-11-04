@@ -65,7 +65,7 @@ final class DrawingToolManagerImpl: DrawingToolManager {
     var selectedColorPublished: Published<UIColor> { _selectedColor }
     var selectedColorPublisher: Published<UIColor>.Publisher { $selectedColor }
     
-    var strokeWidth: CGFloat = 2.0
+    var strokeWidth: CGFloat = 5.0
     
     func setStrokeWidth(_ newWidth: CGFloat) {
         strokeWidth = newWidth

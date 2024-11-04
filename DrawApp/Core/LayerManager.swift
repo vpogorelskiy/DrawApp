@@ -192,9 +192,13 @@ final class LayerManagerImpl: LayerManager {
                 context.setLineWidth(pathData.width)
                 context.setStrokeColor(pathData.color.cgColor)
                 
+                if let firstPoint = pathData.points.first {
+                    context.move(to: firstPoint)
+                }
+                
                 pathData.points.forEach { point in
-                    context.move(to: point)
                     context.addLine(to: point)
+                    context.move(to: point)
                 }
                 
                 context.strokePath()
