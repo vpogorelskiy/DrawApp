@@ -32,6 +32,7 @@ enum ShapeType{
         var points: [CGPoint]
         var width: CGFloat
         var color: UIColor
+        var blendMode: CGBlendMode
     }
     
     struct ImageData {
@@ -144,9 +145,11 @@ final class LayerManagerImpl: LayerManager {
     
     private func currentDrawnToLayerShape(_ currentShape: CurrentDrawnShape) -> ShapeType {
         var color: UIColor = drawingToolManager.selectedColor
+        var blendMode: CGBlendMode = .normal
         switch currentShape.tool {
         case .erase:
-            color = .clear
+            color = .black
+            blendMode = .clear
             fallthrough
         case .pencil, .brush:
             var points: [CGPoint] = []
@@ -157,7 +160,8 @@ final class LayerManagerImpl: LayerManager {
             
             return .path(.init(points: points,
                                width: drawingToolManager.strokeWidth,
-                               color: color))
+                               color: color,
+                               blendMode: blendMode))
         case .shape(let shape):
             let image = shape.image
             var rect: CGRect = .zero
@@ -191,6 +195,7 @@ final class LayerManagerImpl: LayerManager {
             case .path(let pathData):
                 context.setLineWidth(pathData.width)
                 context.setStrokeColor(pathData.color.cgColor)
+                context.setBlendMode(pathData.blendMode)
                 
                 if let firstPoint = pathData.points.first {
                     context.move(to: firstPoint)
