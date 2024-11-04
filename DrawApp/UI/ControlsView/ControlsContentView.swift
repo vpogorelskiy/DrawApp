@@ -9,10 +9,6 @@ import SwiftUI
 import Combine
 
 final class ControlsContentViewModel: ObservableObject {
-    @Published var isShapesMenuShown = false
-    @Published var isColorsMenuShown = false
-    @Published var isPalleteMenuShown = false
-    
     public let topToolbarViewModel = TopToolbarViewModel()
     public let bottomToolbarViewModel = BottomToolbarViewModel()
 }
@@ -37,33 +33,41 @@ struct ControlsContentView<Content: View>: View {
             }
             .background(Color(uiColor: AppColor.black))
             
-            toolbarsStack
+            toolbarsOverlay
         }
     }
     
-    var toolbarsStack: some View {
+    var toolbarsOverlay: some View {
         VStack(spacing: 8) {
             Spacer()
             
-//            
-//            // TODO: Extract toolbar into a separate class
-//            if (viewModel.isPalleteMenuShown) {
-//                HStack {
-//                    ToolbarButton(image: AppImage.square, action: .square, actionReceiver: viewModel)
-//                    ToolbarButton(image: AppImage.circle, action: .circle, actionReceiver: viewModel)
-//                    ToolbarButton(image: AppImage.triangle, action: .triangle, actionReceiver: viewModel)
-//                    ToolbarButton(image: AppImage.arrowUp, action: .arrow, actionReceiver: viewModel)
-//                }
-//            }
-//            
-//            if (viewModel.isColorsMenuShown) {
-//                HStack {
-//                    ToolbarButton(image: AppImage.palette, action: .palette, actionReceiver: viewModel)
-//                    ToolbarButton(image: AppImage.circle, action: .circle, actionReceiver: viewModel)
-//                    ToolbarButton(image: AppImage.circle, action: .triangle, actionReceiver: viewModel)
-//                    ToolbarButton(image: AppImage.circle, action: .arrow, actionReceiver: viewModel)
-//                }
-//            }
+            if (viewModel.bottomToolbarViewModel.isShapesMenuShown) {
+                HStack {
+                    ForEach(Array(viewModel.bottomToolbarViewModel.shapesViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+                        ToolbarButton(buttonItem: item)
+                            .frame(width: 32, height: 32)
+                    }
+                }
+            }
+            
+            if (viewModel.bottomToolbarViewModel.isColorsMenuShown) {
+                HStack {
+                    ForEach(Array(viewModel.bottomToolbarViewModel.simpleColorsViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+                        ToolbarButton(buttonItem: item)
+                            .frame(width: 32, height: 32)
+                    }
+                }
+            }
+            
+            if (viewModel.bottomToolbarViewModel.simpleColorsViewModel.isPaletteMenuShown) {
+                Grid(horizontalSpacing: 16,
+                     verticalSpacing: 16) {
+                    ForEach(Array(viewModel.bottomToolbarViewModel.paletteViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+                        ToolbarButton(buttonItem: item)
+                            .frame(width: 32, height: 32)
+                    }
+                }
+            }
         }
     }
     

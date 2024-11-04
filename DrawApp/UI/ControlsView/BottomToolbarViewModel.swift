@@ -19,9 +19,12 @@ class BottomToolbarViewModel: ObservableObject {
     
     @Published var isShapesMenuShown = false
     @Published var isColorsMenuShown = false
-    @Published var isPalleteMenuShown = false
     
     @Published private var selectedTool: Tool? = nil
+    
+    public let simpleColorsViewModel = ColorsViewModel()
+    public let paletteViewModel = PaletteViewModel()
+    public let shapesViewModel = ShapesViewModel()
     
     lazy var buttonItems: [ToolbarButtonItem] = {
         [
@@ -43,7 +46,15 @@ class BottomToolbarViewModel: ObservableObject {
         ]
     }()
     
-    func deselectTool() {
+    func dismissOverlay() {
+        isShapesMenuShown = false
+        isColorsMenuShown = false
+        simpleColorsViewModel.isPaletteShown = false
+        
+        
+    }
+    
+    func deselect() {
         selectTool(nil)
     }
     
