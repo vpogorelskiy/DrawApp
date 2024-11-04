@@ -74,6 +74,7 @@ final class LayerManagerImpl: LayerManager {
     private var imageSize: CGSize = .zero
     
     @Injected private var drawingToolManager: DrawingToolManager!
+    @Injected private var undoManager: UndoManager!
     
     private var currentShape: CurrentDrawnShape?
     
