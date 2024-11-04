@@ -9,7 +9,12 @@ import Foundation
 
 protocol UndoManager {
     var canUndo: Bool { get }
+    var canUndoPublished: Published<Bool> { get }
+    var canUndoPublisher: Published<Bool>.Publisher { get }
+    
     var canRedo: Bool { get }
+    var canRedoPublished: Published<Bool> { get }
+    var canRedoPublisher: Published<Bool>.Publisher { get }
     
     func undo()
     func redo()
@@ -17,12 +22,17 @@ protocol UndoManager {
 
 public final class UndoManagerImpl: UndoManager {
     @Published var canUndo: Bool = true
+    var canUndoPublished: Published<Bool> { _canUndo }
+    var canUndoPublisher: Published<Bool>.Publisher { $canUndo }
+    
     @Published var canRedo: Bool = true
+    var canRedoPublished: Published<Bool> { _canRedo }
+    var canRedoPublisher: Published<Bool>.Publisher { $canRedo }
     
     func undo() {
-        canUndo.toggle()
+        // TODO: Implement
     }
     func redo() {
-        canRedo.toggle()
+        // TODO: Implement
     }
 }

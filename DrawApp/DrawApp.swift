@@ -16,7 +16,7 @@ struct DrawApp: App {
                                 shapesViewModel: .init(),
                                 simpleColorsViewModel: .init(),
                                 paletteViewModel: .init(),
-                                contentView: { DrawingView() })
+                                contentView: { DrawingView(viewModel: .init()) })
         }
     }
     

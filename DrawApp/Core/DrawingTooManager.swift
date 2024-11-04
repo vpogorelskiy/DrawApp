@@ -11,6 +11,20 @@ import UIKit
 enum DrawingMode: Equatable {
     enum Shape: Equatable {
         case square, circle, triangle, arrow
+        
+        var image: UIImage {
+            switch self {
+            case .square:
+                AppImage.square
+            case .circle:
+                AppImage.circle
+            case .triangle:
+                AppImage.triangle
+            case .arrow:
+                AppImage.arrowUp
+            }
+        }
+        
     }
     
     case pencil, brush, erase
@@ -35,6 +49,9 @@ protocol DrawingToolManager {
     var selectedColorPublished: Published<UIColor> { get }
     var selectedColorPublisher: Published<UIColor>.Publisher { get }
     
+    var strokeWidth: CGFloat { get }
+    
+    func setStrokeWidth(_: CGFloat)
     func selectColor(_: UIColor)
     func setDrawingMode(_: DrawingMode?)
 }
@@ -47,6 +64,12 @@ final class DrawingToolManagerImpl: DrawingToolManager {
     @Published var selectedColor: UIColor = AppColor.white
     var selectedColorPublished: Published<UIColor> { _selectedColor }
     var selectedColorPublisher: Published<UIColor>.Publisher { $selectedColor }
+    
+    var strokeWidth: CGFloat = 2.0
+    
+    func setStrokeWidth(_ newWidth: CGFloat) {
+        strokeWidth = newWidth
+    }
     
     func selectColor(_ color: UIColor) {
         selectedColor = color

@@ -40,7 +40,7 @@ class TopToolbarViewModel: ObservableObject {
            .init(image: AppImage.Layers, 
                  isSelected: true,
                  value: .layers,
-                 onTap: { [weak self] in self?.layerManager.showLayers() }),
+                 onTap: { [weak self] in self?.showAllLayers() }),
            .init(image: AppImage.stop, 
                  isSelected: playbackManager.canPause,
                  value: .stop,
@@ -51,4 +51,8 @@ class TopToolbarViewModel: ObservableObject {
                  onTap: { [weak self] in self?.playbackManager.play() })
        ]
     }()
+    
+    private func showAllLayers() {
+        // TODO: Implement
+    }
 }
