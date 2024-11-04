@@ -163,7 +163,7 @@ final class LayerManagerImpl: LayerManager {
             var rect: CGRect = .zero
             
             if let origin = currentShape.points.first?.startLocation,
-               let lastPoint = currentShape.points.last?.startLocation {
+               let lastPoint = currentShape.points.last?.location {
                 let minX = min(origin.x, lastPoint.x)
                 let maxX = max(origin.x, lastPoint.x)
                 let minY = min(origin.y, lastPoint.y)

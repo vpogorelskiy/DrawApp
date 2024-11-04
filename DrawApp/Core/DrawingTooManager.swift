@@ -57,11 +57,11 @@ protocol DrawingToolManager {
 }
 
 final class DrawingToolManagerImpl: DrawingToolManager {
-    @Published var drawingMode: DrawingMode?
+    @Published var drawingMode: DrawingMode? = .brush
     var drawingModePublished: Published<DrawingMode?> { _drawingMode }
     var drawingModePublisher: Published<DrawingMode?>.Publisher { $drawingMode }
     
-    @Published var selectedColor: UIColor = AppColor.white
+    @Published var selectedColor: UIColor = AppColor.getColor(named: "Palette 10")
     var selectedColorPublished: Published<UIColor> { _selectedColor }
     var selectedColorPublisher: Published<UIColor>.Publisher { $selectedColor }
     

@@ -68,6 +68,7 @@ struct DrawingView: View {
 //                Image(uiImage: AppImage.backgroundTexture)
                 if let back = viewModel.backgroundImage {
                     Image(uiImage: back)
+                        .opacity(0.5)
                 }
                 
                 if let image = viewModel.currentImage {
