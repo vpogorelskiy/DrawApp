@@ -71,6 +71,7 @@
 		2B4FD0812CD8207B00EA8E43 /* ControlsView */ = {
 			isa = PBXGroup;
 			children = (
+				2BB932152CD7BD6A00EDBF1C /* ControlsContentView.swift */,
 				2B4FD0862CD8213C00EA8E43 /* BottomBarViewModel.swift */,
 				2B4FD0822CD8209500EA8E43 /* TopBarViewModel.swift */,
 				2B4FD09D2CD8C44800EA8E43 /* BottomToolbarViewModel.swift */,
@@ -143,7 +144,6 @@
 				2B4FD0812CD8207B00EA8E43 /* ControlsView */,
 				2BB932192CD7C65A00EDBF1C /* Components */,
 				2BB931FF2CD7B76500EDBF1C /* ContentView.swift */,
-				2BB932152CD7BD6A00EDBF1C /* ControlsContentView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
