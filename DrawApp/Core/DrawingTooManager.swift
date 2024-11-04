@@ -65,10 +65,22 @@ final class DrawingToolManagerImpl: DrawingToolManager {
     var selectedColorPublished: Published<UIColor> { _selectedColor }
     var selectedColorPublisher: Published<UIColor>.Publisher { $selectedColor }
     
-    var strokeWidth: CGFloat = 5.0
+    var strokeWidth: CGFloat {
+        // Не успеваю реализвать ввод толщины кисти
+        return switch drawingMode {
+        case .pencil:
+            2.0
+        case .brush:
+            10
+        case .erase:
+            15
+        default:
+            1.0
+        }
+    }
     
     func setStrokeWidth(_ newWidth: CGFloat) {
-        strokeWidth = newWidth
+        // TODO: Implement
     }
     
     func selectColor(_ color: UIColor) {
