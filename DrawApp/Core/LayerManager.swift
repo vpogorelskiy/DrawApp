@@ -12,7 +12,7 @@ import UIKit
 protocol LayerManager {
     func deleteLayer()
     func addLayer()
-    func getLayersImages() -> [UIImage] // TODO: Consider background thread
+    func getLayersImages() -> [UIImage] // TODO: Consider mobing to background thread
     
     var currentImage: UIImage? { get }
     var currentImagePublished: Published<UIImage?> { get }
@@ -118,6 +118,7 @@ final class LayerManagerImpl: LayerManager {
         currentShape.points.append(gesture)
         let shapeType = currentDrawnToLayerShape(currentShape)
         layers.last?.shapes.append(shapeType)
+        self.currentShape = nil
         renderForeground()
     }
     

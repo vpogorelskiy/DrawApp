@@ -65,16 +65,23 @@ struct DrawingView: View {
     var body: some View {
         GeometryReader(content: { geometry in
             ZStack(alignment: .center) {
-                Image(uiImage: AppImage.backgroundTexture)
+//                Image(uiImage: AppImage.backgroundTexture)
+                if let back = viewModel.backgroundImage {
+                    Image(uiImage: back)
+                }
+                
                 if let image = viewModel.currentImage {
                     Image(uiImage: image)
                 }
             }
+            .frame(width: geometry.size.width, height: geometry.size.height)
             .gesture(
                 DragGesture()
                     .onChanged({ value in
-                        viewModel.receiveGesture(value)
-                        print("DragGesture.onChanged.value: \(value)")
+                        if CGRect(origin: .zero, size: geometry.size).contains(value.location) {
+                            viewModel.receiveGesture(value)
+                            print("DragGesture.onChanged.value: \(value)")
+                        }
                     })
                     .onEnded({ value in
                         viewModel.stopCurrentGesture(value)
