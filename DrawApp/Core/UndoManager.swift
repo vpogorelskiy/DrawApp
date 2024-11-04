@@ -50,11 +50,19 @@ public final class UndoManagerImpl: UndoManager {
     private var actionIndex: Int = 0
     
     func undo() {
-        
+        if !actions.isEmpty && actionIndex >= 0 && actionIndex < actions.count {
+            let action = actions[actionIndex]
+            undoSubject.send(action)
+            actionIndex -= 1
+        }
     }
     
     func redo() {
-        // TODO: Implement
+        if !actions.isEmpty && actionIndex < actions.count - 1 {
+            actionIndex += 1
+            let action = actions[actionIndex]
+            redoSubject.send(action)
+        }
     }
     
     func addAction(_ newAction: UndoRedoAction) {

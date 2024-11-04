@@ -85,11 +85,13 @@ final class LayerManagerImpl: LayerManager {
         if layers.isEmpty {
             layers = [.init()]
         }
+        undoManager.addAction(.deleteLayer)
         reRenderAllViews()
     }
     
     func addLayer() { 
         layers.append(.init())
+        undoManager.addAction(.createLayer)
         
         reRenderAllViews()
     }
@@ -121,6 +123,7 @@ final class LayerManagerImpl: LayerManager {
         let shapeType = currentDrawnToLayerShape(currentShape)
         layers.last?.shapes.append(shapeType)
         self.currentShape = nil
+        undoManager.addAction(.draw(shapeType))
         renderForeground()
     }
     
