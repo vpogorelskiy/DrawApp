@@ -100,10 +100,8 @@
 		2B4FD0A82CD8FBEC00EA8E43 /* BottomBar */ = {
 			isa = PBXGroup;
 			children = (
+				2B4FD0AC2CD913FE00EA8E43 /* Overlay */,
 				2B4FD09D2CD8C44800EA8E43 /* BottomToolbarViewModel.swift */,
-				2B4FD0A12CD8CDC200EA8E43 /* ColorsViewModel.swift */,
-				2B4FD0A52CD8FBD600EA8E43 /* ShapesViewModel.swift */,
-				2B4FD0A32CD8FBB900EA8E43 /* PaletteViewModel.swift */,
 			);
 			path = BottomBar;
 			sourceTree = "<group>";
@@ -114,6 +112,16 @@
 				2B4FD0AA2CD8FCBD00EA8E43 /* DrawingView.swift */,
 			);
 			path = DrawingView;
+			sourceTree = "<group>";
+		};
+		2B4FD0AC2CD913FE00EA8E43 /* Overlay */ = {
+			isa = PBXGroup;
+			children = (
+				2B4FD0A12CD8CDC200EA8E43 /* ColorsViewModel.swift */,
+				2B4FD0A52CD8FBD600EA8E43 /* ShapesViewModel.swift */,
+				2B4FD0A32CD8FBB900EA8E43 /* PaletteViewModel.swift */,
+			);
+			path = Overlay;
 			sourceTree = "<group>";
 		};
 		2BB931F12CD7B76500EDBF1C = {

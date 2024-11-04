@@ -18,9 +18,9 @@ class BottomToolbarViewModel: ObservableObject {
     
     @Injected var toolManager: DrawingToolManager!
     
-    @Published var isShapesMenuShown = true
-    @Published var isColorsMenuShown = true
-    @Published var isPaletteMenuShown = true
+    @Published var isShapesMenuShown = false
+    @Published var isColorsMenuShown = false
+    @Published var isPaletteMenuShown = false
     
     @Published private var selectedTool: Tool? = nil
     
@@ -29,6 +29,11 @@ class BottomToolbarViewModel: ObservableObject {
     public let shapesViewModel = ShapesViewModel()
     
     private var cancellables: Set<AnyCancellable> = []
+    
+    private lazy var colorItem: ToolbarButtonItem<Tool> = .init(imageType: .circle(toolManager.selectedColor),
+                                                                isSelected: selectedTool == .color,
+                                                                value: .color,
+                                                                onTap: { [weak self] in self?.selectTool(.color) })
     
     lazy var buttonItems: [ToolbarButtonItem<Tool>] = {
         [
@@ -48,11 +53,7 @@ class BottomToolbarViewModel: ObservableObject {
                   isSelected: selectedTool == .shapes,
                   value: .shapes,
                   onTap: { [weak self] in self?.selectTool(.shapes) }),
-            .init(imageType: .double(bottom: AppImage.circleFilled(withColor: toolManager.selectedColor),
-                                     top: AppImage.colorCircle),
-                  isSelected: selectedTool == .color,
-                  value: .color,
-                  onTap: { [weak self] in self?.selectTool(.color) })
+            colorItem
         ]
     }()
     
@@ -79,10 +80,15 @@ class BottomToolbarViewModel: ObservableObject {
         
         if tool == .color {
             isColorsMenuShown.toggle()
+            if (!isColorsMenuShown) {
+                isPaletteMenuShown = false
+            }
         }
         
         buttonItems.forEach{
-            $0.isSelected = $0.value == tool
+            if $0.value == tool {
+                $0.isSelected.toggle()
+            }
         }
     }
     

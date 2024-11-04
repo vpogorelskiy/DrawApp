@@ -34,7 +34,7 @@ enum AppImage {
             .withTintColor(withColor, renderingMode: .alwaysTemplate)
     }
     
-    private static func getImage(named: String) -> UIImage {
+    public static func getImage(named: String) -> UIImage {
         UIImage(named: named, in: .main, compatibleWith: nil)!
     }
 }
@@ -47,7 +47,8 @@ enum AppColor {
     public static var red: UIColor { getColor(named: "Red") }
     public static var white: UIColor { getColor(named: "White") }
     
-    private static func getColor(named: String) -> UIColor {
+    
+    public static func getColor(named: String) -> UIColor {
         UIColor(named: named, in: .main, compatibleWith: nil)!
     }
 }

@@ -15,7 +15,7 @@ final class ColorsViewModel: ObservableObject {
     }
     
     @Injected var toolManager: DrawingToolManager!
-    @Published var isPaletteMenuShown = true
+    @Published var isPaletteMenuShown = false
     
     private var colors: [UIColor] = [
         AppColor.white,
@@ -32,8 +32,7 @@ final class ColorsViewModel: ObservableObject {
                   onTap: { [weak self] in self?.selectPalette() }),
             
         ] + colors.map { color in
-            ToolbarButtonItem(imageType: .double(bottom: AppImage.circleFilled(withColor: color),
-                                                 top: AppImage.colorCircle),
+            ToolbarButtonItem(imageType: .circle(color),
                               isSelected: toolManager.selectedColor == color,
                               value: .color(color),
                               onTap: { [weak self] in self?.selectColor(color) })

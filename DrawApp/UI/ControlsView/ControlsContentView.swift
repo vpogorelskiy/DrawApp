@@ -48,8 +48,9 @@ struct ControlsContentView<Content: View>: View {
                 
                 // Palette grid
                 if (bottomToolbarViewModel.simpleColorsViewModel.isPaletteMenuShown) {
-                    Grid(horizontalSpacing: 16,
-                         verticalSpacing: 16) {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 5),
+                              alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/,
+                              spacing: 16) {
                         ForEach(Array(bottomToolbarViewModel.paletteViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
                             ToolbarButton(buttonItem: item)
                                 .frame(width: 32, height: 32)
@@ -57,6 +58,7 @@ struct ControlsContentView<Content: View>: View {
                     }.padding(16)
                         .background(.ultraThinMaterial)
                         .cornerRadius(4)
+
                 }
                 
                 // Small colors toolbar

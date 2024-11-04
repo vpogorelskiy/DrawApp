@@ -21,15 +21,14 @@ struct ToolbarButton<Value: Equatable>: View {
         Button(action: { buttonItem.onTap() },
                label: {
             switch buttonItem.imageStore {
-            case .single(let image):
-                Image(uiImage: image.withRenderingMode(.alwaysTemplate))
+            case .image(let uiImage):
+                Image(uiImage: uiImage.withRenderingMode(.alwaysTemplate))
                     .tint(.init(uiColor: imageColor))
-            case .double(let bottom, let top):
-                ZStack {
-                    Image(uiImage: bottom)
-                    Image(uiImage: top.withRenderingMode(.alwaysTemplate))
-                        .tint(.init(uiColor: imageColor))
-                }
+            case .circle(let fillColor):
+                Circle()
+                    .stroke(Color(uiColor: imageColor), lineWidth: 2 )
+                    .fill(Color(uiColor: fillColor))
+                    .frame(width: 28, height: 28)
             }
         })
     }
@@ -42,17 +41,17 @@ struct ToolbarButton<Value: Equatable>: View {
 final class ToolbarButtonItem<Value: Equatable>: ObservableObject {
     
     enum ImageType {
-        case single(UIImage)
-        case double(bottom: UIImage, top: UIImage)
+        case image(UIImage)
+        case circle(UIColor)
     }
     
-    let imageStore: ImageType
+    @Published var imageStore: ImageType
     @Published var isSelected: Bool
     let onTap: () -> Void
     let value: Value
     
     convenience init(image: UIImage, isSelected: Bool, value: Value, onTap: @escaping () -> Void) {
-        self.init(imageType: .single(image),
+        self.init(imageType: .image(image),
                   isSelected: isSelected,
                   value: value,
                   onTap: onTap)
