@@ -15,13 +15,19 @@ import Combine
 
 struct ControlsContentView<Content: View>: View {
     
-    @ObservedObject var topToolbarViewModel = TopToolbarViewModel()
-    @ObservedObject var bottomToolbarViewModel = BottomToolbarViewModel()
+    @ObservedObject private var topToolbarViewModel = TopToolbarViewModel()
+    @ObservedObject private var bottomToolbarViewModel = BottomToolbarViewModel()
+    @ObservedObject private var simpleColorsViewModel = ColorsViewModel()
+    @ObservedObject private var paletteViewModel = PaletteViewModel()
+    @ObservedObject private var shapesViewModel = ShapesViewModel()
     
     @ViewBuilder var contentBuilder: () -> Content
     
     init(topviewModel: TopToolbarViewModel,
          bottomViewModel: BottomToolbarViewModel,
+         shapesViewModel: ShapesViewModel,
+         simpleColorsViewModel: ColorsViewModel,
+         paletteViewModel: PaletteViewModel,
          contentView: @escaping () -> Content) {
         self.topToolbarViewModel = topviewModel
         self.bottomToolbarViewModel = bottomViewModel
@@ -47,11 +53,11 @@ struct ControlsContentView<Content: View>: View {
                 Spacer()
                 
                 // Palette grid
-                if (bottomToolbarViewModel.simpleColorsViewModel.isPaletteMenuShown) {
+                if (simpleColorsViewModel.isPaletteMenuShown && bottomToolbarViewModel.isColorsMenuShown) {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 5),
                               alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/,
                               spacing: 16) {
-                        ForEach(Array(bottomToolbarViewModel.paletteViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+                        ForEach(Array(paletteViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
                             ToolbarButton(buttonItem: item)
                                 .frame(width: 32, height: 32)
                         }
@@ -64,7 +70,7 @@ struct ControlsContentView<Content: View>: View {
                 // Small colors toolbar
                 if (bottomToolbarViewModel.isColorsMenuShown) {
                     HStack {
-                        ForEach(Array(bottomToolbarViewModel.simpleColorsViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+                        ForEach(Array(simpleColorsViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
                             ToolbarButton(buttonItem: item)
                                 .frame(width: 32, height: 32)
                         }
@@ -76,7 +82,7 @@ struct ControlsContentView<Content: View>: View {
                 // Shapes selection toolbar
                 if (bottomToolbarViewModel.isShapesMenuShown) {
                     HStack {
-                        ForEach(Array(bottomToolbarViewModel.shapesViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
+                        ForEach(Array(shapesViewModel.buttonItems.enumerated()), id: \.offset) { index, item in
                             ToolbarButton(buttonItem: item)
                                 .frame(width: 32, height: 32)
                         }
@@ -132,5 +138,8 @@ struct ControlsContentView<Content: View>: View {
 #Preview {
     ControlsContentView(topviewModel: .init(),
                         bottomViewModel: .init(),
+                        shapesViewModel: .init(),
+                        simpleColorsViewModel: .init(),
+                        paletteViewModel: .init(),
                         contentView: { Text("Empty").background(Color.white) })
 }

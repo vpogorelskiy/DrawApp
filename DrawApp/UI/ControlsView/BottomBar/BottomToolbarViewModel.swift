@@ -22,11 +22,6 @@ class BottomToolbarViewModel: ObservableObject {
     
     @Published var isShapesMenuShown = false
     @Published var isColorsMenuShown = false
-    @Published var isPaletteMenuShown = false
-    
-    public let simpleColorsViewModel = ColorsViewModel()
-    public let paletteViewModel = PaletteViewModel()
-    public let shapesViewModel = ShapesViewModel()
     
     var buttonItems: [ToolbarButtonItem<Tool>] {
         toolItems + [shapesItem, colorItem]
@@ -68,10 +63,6 @@ class BottomToolbarViewModel: ObservableObject {
     // MARK - Public methods
     
     init() {
-        simpleColorsViewModel.$isPaletteMenuShown
-            .assign(to: \.isPaletteMenuShown, on: self)
-            .store(in: &cancellables)
-        
         toolManager.selectedColorPublisher
             .sink { [weak self] color in
                 self?.colorItem.imageStore = .circle(color)
@@ -90,7 +81,6 @@ class BottomToolbarViewModel: ObservableObject {
     func dismissOverlay() {
         isShapesMenuShown = false
         isColorsMenuShown = false
-        simpleColorsViewModel.isPaletteMenuShown = false
     }
     
     func deselect() {

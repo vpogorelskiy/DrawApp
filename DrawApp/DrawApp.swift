@@ -13,6 +13,9 @@ struct DrawApp: App {
         WindowGroup {
             ControlsContentView(topviewModel: .init(),
                                 bottomViewModel: .init(),
+                                shapesViewModel: .init(),
+                                simpleColorsViewModel: .init(),
+                                paletteViewModel: .init(),
                                 contentView: { DrawingView() })
         }
     }
