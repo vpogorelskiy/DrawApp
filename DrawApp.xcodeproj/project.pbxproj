@@ -11,7 +11,7 @@
 		2B4FD08F2CD8B90300EA8E43 /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD08E2CD8B90300EA8E43 /* UndoManager.swift */; };
 		2B4FD0912CD8BA7100EA8E43 /* PlaybackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD0902CD8BA7100EA8E43 /* PlaybackManager.swift */; };
 		2B4FD0932CD8BAC300EA8E43 /* LayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD0922CD8BAC300EA8E43 /* LayerManager.swift */; };
-		2B4FD0952CD8BB5C00EA8E43 /* TopToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD0942CD8BB5C00EA8E43 /* TopToolbarView.swift */; };
+		2B4FD0952CD8BB5C00EA8E43 /* TopToolbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD0942CD8BB5C00EA8E43 /* TopToolbarViewModel.swift */; };
 		2B4FD0982CD8C16500EA8E43 /* Injected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD0972CD8C16500EA8E43 /* Injected.swift */; };
 		2B4FD09A2CD8C17B00EA8E43 /* Resolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD0992CD8C17B00EA8E43 /* Resolver.swift */; };
 		2B4FD09C2CD8C19400EA8E43 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD09B2CD8C19400EA8E43 /* ServiceLocator.swift */; };
@@ -36,7 +36,7 @@
 		2B4FD08E2CD8B90300EA8E43 /* UndoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoManager.swift; sourceTree = "<group>"; };
 		2B4FD0902CD8BA7100EA8E43 /* PlaybackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackManager.swift; sourceTree = "<group>"; };
 		2B4FD0922CD8BAC300EA8E43 /* LayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerManager.swift; sourceTree = "<group>"; };
-		2B4FD0942CD8BB5C00EA8E43 /* TopToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopToolbarView.swift; sourceTree = "<group>"; };
+		2B4FD0942CD8BB5C00EA8E43 /* TopToolbarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopToolbarViewModel.swift; sourceTree = "<group>"; };
 		2B4FD0972CD8C16500EA8E43 /* Injected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injected.swift; sourceTree = "<group>"; };
 		2B4FD0992CD8C17B00EA8E43 /* Resolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resolver.swift; sourceTree = "<group>"; };
 		2B4FD09B2CD8C19400EA8E43 /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
@@ -92,7 +92,7 @@
 		2B4FD0A72CD8FBE800EA8E43 /* TopBar */ = {
 			isa = PBXGroup;
 			children = (
-				2B4FD0942CD8BB5C00EA8E43 /* TopToolbarView.swift */,
+				2B4FD0942CD8BB5C00EA8E43 /* TopToolbarViewModel.swift */,
 			);
 			path = TopBar;
 			sourceTree = "<group>";
@@ -291,7 +291,7 @@
 				2B4FD0A62CD8FBD600EA8E43 /* ShapesViewModel.swift in Sources */,
 				2B4FD08D2CD8B1F100EA8E43 /* ToolbarButton.swift in Sources */,
 				2BB931FE2CD7B76500EDBF1C /* DrawApp.swift in Sources */,
-				2B4FD0952CD8BB5C00EA8E43 /* TopToolbarView.swift in Sources */,
+				2B4FD0952CD8BB5C00EA8E43 /* TopToolbarViewModel.swift in Sources */,
 				2BB932182CD7BEAA00EDBF1C /* Assets.swift in Sources */,
 				2B4FD0982CD8C16500EA8E43 /* Injected.swift in Sources */,
 				2B4FD0A42CD8FBB900EA8E43 /* PaletteViewModel.swift in Sources */,

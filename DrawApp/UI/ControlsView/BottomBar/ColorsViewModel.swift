@@ -9,10 +9,13 @@ import Foundation
 import UIKit
 
 final class ColorsViewModel: ObservableObject {
-    @Published var isPaletteShown: Bool = false
+    enum Action: Equatable {
+        case palette
+        case color(UIColor)
+    }
     
     @Injected var toolManager: DrawingToolManager!
-    @Published var isPaletteMenuShown = false
+    @Published var isPaletteMenuShown = true
     
     private var colors: [UIColor] = [
         AppColor.white,
@@ -21,25 +24,36 @@ final class ColorsViewModel: ObservableObject {
         AppColor.blue
     ]
     
-    lazy var buttonItems: [ToolbarButtonItem] = {
+    lazy var buttonItems: [ToolbarButtonItem<Action>] = {
         [
             .init(image: AppImage.palette,
-                  isSelected: isPaletteShown,
+                  isSelected: isPaletteMenuShown,
+                  value: .palette,
                   onTap: { [weak self] in self?.selectPalette() }),
             
         ] + colors.map { color in
-            ToolbarButtonItem(image: AppImage.circleFilled(withColor: color),
+            ToolbarButtonItem(imageType: .double(bottom: AppImage.circleFilled(withColor: color),
+                                                 top: AppImage.colorCircle),
                               isSelected: toolManager.selectedColor == color,
+                              value: .color(color),
                               onTap: { [weak self] in self?.selectColor(color) })
         }
     }()
     
     private func selectPalette() {
-        // TODO: Implement
+        isPaletteMenuShown.toggle()
+        
+        buttonItems.forEach{
+            $0.isSelected = $0.value == .palette
+        }
     }
     
     private func selectColor(_ color: UIColor) {
         toolManager.selectColor(color)
+        
+        buttonItems.forEach{
+            $0.isSelected = $0.value == .color(color)
+        }
         // TODO: Implement
     }
 }

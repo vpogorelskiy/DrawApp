@@ -18,14 +18,19 @@ final class PaletteViewModel: ObservableObject {
         AppColor.blue
     ]
     
-    lazy var buttonItems: [ToolbarButtonItem] = colors.map { color in
+    lazy var buttonItems: [ToolbarButtonItem<UIColor>] = colors.map { color in
         ToolbarButtonItem(image: AppImage.circleFilled(withColor: color),
                           isSelected: toolManager.selectedColor == color,
+                          value: color,
                           onTap: { [weak self] in self?.selectColor(color) })
     }
     
     private func selectColor(_ color: UIColor) {
         toolManager.selectColor(color)
+        
+        buttonItems.forEach{
+            $0.isSelected = $0.value == color
+        }
         // TODO: Implement
     }
 }

@@ -8,8 +8,8 @@
 import SwiftUI
 import Combine
 
-struct ToolbarButton: View {
-    private let buttonItem: ToolbarButtonItem
+struct ToolbarButton<Value: Equatable>: View {
+    @ObservedObject var buttonItem: ToolbarButtonItem<Value>
     @Environment(\.defaultColor) private var defaultColor: UIColor
     @Environment(\.selectedColor) private var selectedColor: UIColor
     
@@ -20,25 +20,49 @@ struct ToolbarButton: View {
     var body: some View {
         Button(action: { buttonItem.onTap() },
                label: {
-            Image(uiImage: buttonItem.image.withRenderingMode(.alwaysTemplate))
-                .tint(.init(uiColor: imageColor))
+            switch buttonItem.imageStore {
+            case .single(let image):
+                Image(uiImage: image.withRenderingMode(.alwaysTemplate))
+                    .tint(.init(uiColor: imageColor))
+            case .double(let bottom, let top):
+                ZStack {
+                    Image(uiImage: bottom)
+                    Image(uiImage: top.withRenderingMode(.alwaysTemplate))
+                        .tint(.init(uiColor: imageColor))
+                }
+            }
         })
     }
     
-    init(buttonItem: ToolbarButtonItem) {
+    init(buttonItem: ToolbarButtonItem<Value>) {
         self.buttonItem = buttonItem
     }
 }
 
-final class ToolbarButtonItem: ObservableObject {
-    let image: UIImage
+final class ToolbarButtonItem<Value: Equatable>: ObservableObject {
+    
+    enum ImageType {
+        case single(UIImage)
+        case double(bottom: UIImage, top: UIImage)
+    }
+    
+    let imageStore: ImageType
     @Published var isSelected: Bool
     let onTap: () -> Void
+    let value: Value
     
-    init(image: UIImage, isSelected: Bool, onTap: @escaping () -> Void) {
-        self.image = image
+    convenience init(image: UIImage, isSelected: Bool, value: Value, onTap: @escaping () -> Void) {
+        self.init(imageType: .single(image),
+                  isSelected: isSelected,
+                  value: value,
+                  onTap: onTap)
+    }
+    
+    init(imageType: ImageType, isSelected: Bool, value: Value, onTap: @escaping () -> Void) {
+        self.imageStore = imageType
         self.isSelected = isSelected
         self.onTap = onTap
+        self.value = value
     }
 }
 

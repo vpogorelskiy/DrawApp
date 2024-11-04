@@ -27,7 +27,7 @@ protocol DrawingToolManager {
 
 final class DrawingToolManagerImpl: DrawingToolManager {
     var drawingMode: DrawingMode?
-    var selectedColor: UIColor = AppColor.blue
+    var selectedColor: UIColor = AppColor.white
     
     func selectColor(_ color: UIColor) {
         selectedColor = color

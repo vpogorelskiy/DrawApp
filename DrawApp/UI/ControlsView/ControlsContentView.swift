@@ -9,8 +9,8 @@ import SwiftUI
 import Combine
 
 final class ControlsContentViewModel: ObservableObject {
-    public let topToolbarViewModel = TopToolbarViewModel()
-    public let bottomToolbarViewModel = BottomToolbarViewModel()
+    @ObservedObject var topToolbarViewModel = TopToolbarViewModel()
+    @ObservedObject var bottomToolbarViewModel = BottomToolbarViewModel()
 }
 
 struct ControlsContentView<Content: View>: View {
@@ -51,7 +51,8 @@ struct ControlsContentView<Content: View>: View {
                                 .frame(width: 32, height: 32)
                         }
                     }.padding(16)
-                        .background(.thinMaterial)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(4)
                 }
                 
                 // Small colors toolbar
@@ -62,7 +63,8 @@ struct ControlsContentView<Content: View>: View {
                                 .frame(width: 32, height: 32)
                         }
                     }.padding(16)
-                        .background(.thinMaterial)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(4)
                 }
                 
                 // Shapes selection toolbar
@@ -73,9 +75,12 @@ struct ControlsContentView<Content: View>: View {
                                 .frame(width: 32, height: 32)
                         }
                     }.padding(16)
-                        .background(.thinMaterial)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(4)
                 }
             }
+            .environment(\.defaultColor, AppColor.white)
+            .environment(\.selectedColor, AppColor.green)
             .padding(60)
         }.onTapGesture {
             viewModel.bottomToolbarViewModel.dismissOverlay()

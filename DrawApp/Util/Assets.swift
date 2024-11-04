@@ -15,6 +15,7 @@ enum AppImage {
     public static var backgroundTexture: UIImage { getImage(named: "BackgroundTexture") }
     public static var brush: UIImage { getImage(named: "Brush") }
     public static var circle: UIImage { getImage(named: "Circle") }
+    public static var colorCircle: UIImage { getImage(named: "ColorCircle") }
     public static var circleFilled: UIImage { getImage(named: "Circle_filled") }
     public static var erase: UIImage { getImage(named: "Erase") }
     public static var filePlus: UIImage { getImage(named: "File_Plus") }
@@ -30,8 +31,7 @@ enum AppImage {
     
     public static func circleFilled(withColor: UIColor) -> UIImage {
         getImage(named: "Circle_filled")
-            .withRenderingMode(.alwaysTemplate)
-            .withTintColor(withColor)
+            .withTintColor(withColor, renderingMode: .alwaysTemplate)
     }
     
     private static func getImage(named: String) -> UIImage {

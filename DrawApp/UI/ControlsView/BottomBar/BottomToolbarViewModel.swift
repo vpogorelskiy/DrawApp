@@ -1,5 +1,5 @@
 //
-//  TopToolbarView.swift
+//  BottomToolbarViewModel.swift
 //  DrawApp
 //
 //  Created by Vyacheslav Pogorelskiy on 04.11.2024.
@@ -17,8 +17,8 @@ class BottomToolbarViewModel: ObservableObject {
     
     @Injected var toolManager: DrawingToolManager!
     
-    @Published var isShapesMenuShown = false
-    @Published var isColorsMenuShown = false
+    @Published var isShapesMenuShown = true
+    @Published var isColorsMenuShown = true
     
     @Published private var selectedTool: Tool? = nil
     
@@ -26,22 +26,28 @@ class BottomToolbarViewModel: ObservableObject {
     public let paletteViewModel = PaletteViewModel()
     public let shapesViewModel = ShapesViewModel()
     
-    lazy var buttonItems: [ToolbarButtonItem] = {
+    lazy var buttonItems: [ToolbarButtonItem<Tool>] = {
         [
             .init(image: AppImage.pencil,
                   isSelected: selectedTool == .pencil,
+                  value: .pencil,
                   onTap: { [weak self] in self?.selectTool(.pencil) }),
             .init(image: AppImage.brush,
                   isSelected: selectedTool == .brush,
+                  value: .brush,
                   onTap: { [weak self] in self?.selectTool(.brush) }),
             .init(image: AppImage.erase,
                   isSelected: selectedTool == .erase,
+                  value: .erase,
                   onTap: { [weak self] in self?.selectTool(.erase) }),
             .init(image: AppImage.shapes,
                   isSelected: selectedTool == .shapes,
+                  value: .shapes,
                   onTap: { [weak self] in self?.selectTool(.shapes) }),
-            .init(image: AppImage.circleFilled(withColor: toolManager.selectedColor),
+            .init(imageType: .double(bottom: AppImage.circleFilled(withColor: toolManager.selectedColor),
+                                     top: AppImage.colorCircle),
                   isSelected: selectedTool == .color,
+                  value: .color,
                   onTap: { [weak self] in self?.selectTool(.color) })
         ]
     }()
@@ -49,9 +55,7 @@ class BottomToolbarViewModel: ObservableObject {
     func dismissOverlay() {
         isShapesMenuShown = false
         isColorsMenuShown = false
-        simpleColorsViewModel.isPaletteShown = false
-        
-        
+        simpleColorsViewModel.isPaletteMenuShown = false
     }
     
     func deselect() {
@@ -59,7 +63,20 @@ class BottomToolbarViewModel: ObservableObject {
     }
     
     private func selectTool(_ tool : Tool?) {
-        isShapesMenuShown = tool == .shapes
-        isColorsMenuShown = tool == .color
+        if tool == .shapes {
+            isShapesMenuShown.toggle()
+        }
+        
+        if tool == .color {
+            isColorsMenuShown.toggle()
+        }
+        
+        buttonItems.forEach{
+            $0.isSelected = $0.value == tool
+        }
+    }
+    
+    private func updateItems() {
+        
     }
 }
