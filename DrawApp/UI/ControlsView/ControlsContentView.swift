@@ -8,19 +8,14 @@
 import SwiftUI
 import Combine
 
-//final class ControlsContentViewModel: ObservableObject {
-//    @ObservedObject var topToolbarViewModel = TopToolbarViewModel()
-//    @Published var bottomToolbarViewModel = BottomToolbarViewModel()
-//}
-
 struct ControlsContentView<Content: View>: View {
     
-    @ObservedObject private var topToolbarViewModel = TopToolbarViewModel()
-    @ObservedObject private var bottomToolbarViewModel = BottomToolbarViewModel()
-    @ObservedObject private var simpleColorsViewModel = ColorsViewModel()
-    @ObservedObject private var paletteViewModel = PaletteViewModel()
-    @ObservedObject private var shapesViewModel = ShapesViewModel()
-    @ObservedObject private var playbackViewModel = PlaybackViewModel()
+    @ObservedObject private var topToolbarViewModel: TopToolbarViewModel
+    @ObservedObject private var bottomToolbarViewModel: BottomToolbarViewModel
+    @ObservedObject private var simpleColorsViewModel: ColorsViewModel
+    @ObservedObject private var paletteViewModel: PaletteViewModel
+    @ObservedObject private var shapesViewModel: ShapesViewModel
+    @ObservedObject private var playbackViewModel: PlaybackViewModel
     
     @ViewBuilder var contentBuilder: () -> Content
     
@@ -29,9 +24,14 @@ struct ControlsContentView<Content: View>: View {
          shapesViewModel: ShapesViewModel,
          simpleColorsViewModel: ColorsViewModel,
          paletteViewModel: PaletteViewModel,
+         playbackViewModel: PlaybackViewModel,
          contentView: @escaping () -> Content) {
         self.topToolbarViewModel = topviewModel
         self.bottomToolbarViewModel = bottomViewModel
+        self.shapesViewModel = shapesViewModel
+        self.simpleColorsViewModel = simpleColorsViewModel
+        self.paletteViewModel = paletteViewModel
+        self.playbackViewModel = playbackViewModel
         self.contentBuilder = contentView
     }
     
@@ -152,6 +152,7 @@ struct ControlsContentView<Content: View>: View {
                         bottomViewModel: .init(),
                         shapesViewModel: .init(),
                         simpleColorsViewModel: .init(),
-                        paletteViewModel: .init(),
+                        paletteViewModel: .init(), 
+                        playbackViewModel: .init(),
                         contentView: { Text("Empty").background(Color.white) })
 }
